@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { User } from './types/user';
-import { spawn } from 'child_process';
 
 export default function OnlineStatusManager() {
   const [users, setUsers] = useState<User[]>([]);
@@ -103,15 +102,15 @@ export default function OnlineStatusManager() {
       {/* Input to add a new user ID*/}
       <div style={{ marginBottom: '1rem' }}>
         <input
-          type="test"
+          type="text"
           value={newUserId}
-          onChenge={(e) => setNewUserId(e.target.value)}
+          onChange={(e) => setNewUserId(e.target.value)}
           placeholder="Enter user ID"
           style={{ padding: '0.5rem', marginRight: '0.5rem' }}
         />
         <button
           onClick={addUser}
-          style= {{ padding '0.5rem', backgroundColor 'lighblue' }}
+          style= {{ padding: '0.5rem', backgroundColor: 'lighblue' }}
         >
           Add User
         </button>
@@ -130,7 +129,7 @@ export default function OnlineStatusManager() {
               {user.onlineStatus}
             </span>
             <button
-              onClick={() = deleteId(user.id)}
+              onClick={() => deleteId(user.id)}
               style={{ color: 'red', marginLeft: '1rem' }}
             >
               DELETE
