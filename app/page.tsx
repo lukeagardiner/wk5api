@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { User } from './types/user';
+import { spawn } from 'child_process';
 
 export default function OnlineStatusManager() {
   const [users, setUsers] = useState<User[]>([]);
@@ -70,8 +71,73 @@ export default function OnlineStatusManager() {
     if (res.ok) {
       // Clear the input fiel after adding
       setNewUserId('');
+
+      // Directly update the UI by adding the new user to the state
+      const newUser = await res.json();
+      setUsers((prev) => [...prev, newUser]);
+    } else {
+      console.log('Failed to add user');
     }
-  }
+  };
 
+  const deleteId = async (id: number) => {
+    // DELETE request to remove the user (assuming a simple post to remove user)
+    const res = await fetch(`/api/users?id=${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({id}),
+    });
 
+    if (res.ok) {
+      fetchAll();
+    } else {
+      console.log('Error: Delete action failed');
+    }
+  };
+
+  // *** DEFINE PRESENTATION ***
+  return (
+    <div style={{ padding: '1rem' }}>
+      <h2>User Presence (Online/Offline)</h2>
+
+      {/* Input to add a new user ID*/}
+      <div style={{ marginBottom: '1rem' }}>
+        <input
+          type="test"
+          value={newUserId}
+          onChenge={(e) => setNewUserId(e.target.value)}
+          placeholder="Enter user ID"
+          style={{ padding: '0.5rem', marginRight: '0.5rem' }}
+        />
+        <button
+          onClick={addUser}
+          style= {{ padding '0.5rem', backgroundColor 'lighblue' }}
+        >
+          Add User
+        </button>
+      </div>
+
+      <ul>
+        {users.map((user) => (
+          <li key={user.id} style={{ marginBottom: '0.5rem' }}>
+            <strong>{user.name}</strong> -{' '}
+            <span
+              style={{
+                color: user.onlineStatus === 'online' ? 'green' : 'gray',
+                fontweight: 'bold',
+              }}
+            >
+              {user.onlineStatus}
+            </span>
+            <button
+              onClick={() = deleteId(user.id)}
+              style={{ color: 'red', marginLeft: '1rem' }}
+            >
+              DELETE
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
