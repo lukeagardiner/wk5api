@@ -8,8 +8,10 @@ export async function GET() {
 }
 
 // Test POST I guess
-export async function POST(req: NextRequest, context: { params: { id: string }}) {
-    const { id } = await req.json();
+export async function POST(req: NextRequest) {
+    //const { id } = await req.json(); // tony modified this one from the original
+    const url = new URL(req.url); // added
+    const id = url.pathname.split('/').pop(); // added - Extract the ID from the URL path
 
     if (!id) {
         // had to add this response init type to make the argument in the response definition valid

@@ -46,12 +46,12 @@ export default function OnlineStatusManager() {
     const res = await fetch(`/api/users?id=${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type' : 'application/json'},
-      body: JSON.stringify({ name: newName, lineStatus: newStatus }), //Corrected field names
+      body: JSON.stringify({ name: newName, onlineStatus: newStatus }), //Corrected field names
     });
 
     if (res.ok) {
       setUsers((prev) => 
-        prev.map((u) => (u.id === id ? {...u, lineStatus: newStatus} :u))
+        prev.map((u) => (u.id === id ? {...u, onlineStatus: newStatus} : u))
       );
     }
   };
@@ -110,7 +110,7 @@ export default function OnlineStatusManager() {
         />
         <button
           onClick={addUser}
-          style= {{ padding: '0.5rem', backgroundColor: 'lighblue' }}
+          style={{ padding: '0.5rem', backgroundColor: 'lightblue' }}
         >
           Add User
         </button>
@@ -123,14 +123,20 @@ export default function OnlineStatusManager() {
             <span
               style={{
                 color: user.onlineStatus === 'online' ? 'green' : 'gray',
-                fontweight: 'bold',
+                fontWeight: 'bold',
               }}
             >
               {user.onlineStatus}
             </span>
             <button
+              onClick={() => toggleStatus(user.id)}
+              style={{ marginLeft: '0.5rem', padding: '0.2rem 0.5rem' }}
+            >
+              Toggle
+            </button>
+            <button
               onClick={() => deleteId(user.id)}
-              style={{ color: 'red', marginLeft: '1rem' }}
+              style={{ color: 'red', marginLeft: '0.5rem' }}
             >
               DELETE
             </button>

@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 import { User } from '../../types/user';
 
 let users: User[] = [];
-let nextUserId = 1; // Initialise user Id counter
 
 // Helper function to find a user by Id
 function findUser(id: number) {
